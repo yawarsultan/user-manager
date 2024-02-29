@@ -39,4 +39,3 @@ These are the tasks that I was able to do in 4 hours. I gave 1 hour on 28-02-202
 	-  Must have granular permissions that can be used in the code.
 	- Must be able to create, edit and destroy own roles.
 	- As an admin must be able to create, edit and destroy all roles.
-* ...
