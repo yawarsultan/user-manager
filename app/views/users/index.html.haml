@@ -1,0 +1,59 @@
+.w-full
+  - if notice.present?
+    %p#notice.py-2.px-3.bg-green-50.mb-5.text-green-500.font-medium.rounded-lg.inline-block= notice
+%section.py-1.bg-blueGray-50
+  .w-full.mb-12.xl:mb-0.px-4.mx-auto.mt-24{class: "xl:w-8/12"}
+    .relative.flex.flex-col.min-w-0.break-words.bg-white.w-full.mb-6.shadow-lg.rounded
+      .rounded-t.mb-0.px-4.py-3.border-0
+        .flex.flex-wrap.items-center
+          .relative.w-full.px-4.max-w-full.flex-grow.flex-1
+            %h3.font-semibold.text-base.text-blueGray-700 Users
+          .relative.w-full.px-4.max-w-full.flex-grow.flex-1.text-right
+            - if @user_roles.include?('create') || current_team.check_owner(current_user.id)
+              = link_to "Create User", new_team_user_path(team_id: current_team.id), class: "bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+      .block.w-full.overflow-x-auto
+        %table.items-center.bg-transparent.w-full.border-collapse
+          %thead
+            %tr
+              %th.px-6.bg-blueGray-50.text-blueGray-500.align-middle.border.border-solid.border-blueGray-100.py-3.text-xs.uppercase.border-l-0.border-r-0.whitespace-nowrap.font-semibold.text-left
+                Avatar
+              %th.px-6.bg-blueGray-50.text-blueGray-500.align-middle.border.border-solid.border-blueGray-100.py-3.text-xs.uppercase.border-l-0.border-r-0.whitespace-nowrap.font-semibold.text-left
+                First Name
+              %th.px-6.bg-blueGray-50.text-blueGray-500.align-middle.border.border-solid.border-blueGray-100.py-3.text-xs.uppercase.border-l-0.border-r-0.whitespace-nowrap.font-semibold.text-left
+                Last Name
+              %th.px-6.bg-blueGray-50.text-blueGray-500.align-middle.border.border-solid.border-blueGray-100.py-3.text-xs.uppercase.border-l-0.border-r-0.whitespace-nowrap.font-semibold.text-left
+                Username
+              %th.px-6.bg-blueGray-50.text-blueGray-500.align-middle.border.border-solid.border-blueGray-100.py-3.text-xs.uppercase.border-l-0.border-r-0.whitespace-nowrap.font-semibold.text-left
+                Email
+              %th.px-6.bg-blueGray-50.text-blueGray-500.align-middle.border.border-solid.border-blueGray-100.py-3.text-xs.uppercase.border-l-0.border-r-0.whitespace-nowrap.font-semibold.text-left
+                Manage Roles
+              %th.px-6.bg-blueGray-50.text-blueGray-500.align-middle.border.border-solid.border-blueGray-100.py-3.text-xs.uppercase.border-l-0.border-r-0.whitespace-nowrap.font-semibold.text-left
+                View
+              %th.px-6.bg-blueGray-50.text-blueGray-500.align-middle.border.border-solid.border-blueGray-100.py-3.text-xs.uppercase.border-l-0.border-r-0.whitespace-nowrap.font-semibold.text-left
+                Edit
+              %th.px-6.bg-blueGray-50.text-blueGray-500.align-middle.border.border-solid.border-blueGray-100.py-3.text-xs.uppercase.border-l-0.border-r-0.whitespace-nowrap.font-semibold.text-left
+                Delete
+          %tbody
+            - @users&.each do |user|
+              %tr
+                %td.border-t-0.px-6.align-middle.border-l-0.border-r-0.text-xs.whitespace-nowrap.p-4.text-left.text-blueGray-700
+                  - if user.avatar.present?
+                    = image_tag user.avatar, width: 100, height: 100
+                %td.border-t-0.px-6.align-middle.border-l-0.border-r-0.text-xs.whitespace-nowrap.p-4.text-left.text-blueGray-700
+                  = user.first_name
+                %td.border-t-0.px-6.align-middle.border-l-0.border-r-0.text-xs.whitespace-nowrap.p-4.text-left.text-blueGray-700
+                  = user.last_name
+                %td.border-t-0.px-6.align-middle.border-l-0.border-r-0.text-xs.whitespace-nowrap.p-4.text-left.text-blueGray-700
+                  = user.username
+                %td.border-t-0.px-6.align-middle.border-l-0.border-r-0.text-xs.whitespace-nowrap.p-4.text-left.text-blueGray-700
+                  = user.email
+                %td.border-t-0.px-6.align-center.border-l-0.border-r-0.text-xs.whitespace-nowrap.p-4
+                  = link_to "Manage Roles", team_user_assign_roles_path(current_team, user.id), class: 'bg-yellow-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150'
+                %td.border-t-0.px-6.align-center.border-l-0.border-r-0.text-xs.whitespace-nowrap.p-4
+                  = link_to "View", team_user_path(team_id: current_team.id, id: user.id), class: 'bg-green-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150'
+                %td.border-t-0.px-6.align-center.border-l-0.border-r-0.text-xs.whitespace-nowrap.p-4
+                  - if current_team.check_owner(current_user.id) || current_user.id == user.id || @user_roles.include?('edit')
+                    = link_to "Edit", edit_team_user_path(team_id: current_team.id, id: user.id), class: 'bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150'
+                %td.border-t-0.px-6.align-middle.border-l-0.border-r-0.text-xs.whitespace-nowrap.p-4
+                  - if current_team.check_owner(current_user.id) || current_user.id == user.id || @user_roles.include?('delete')
+                    = link_to "Delete", team_user_path(team_id: current_team.id, id: user.id), data: { turbo_method: :delete }, class: 'bg-red-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150'

@@ -1,0 +1,71 @@
+%nav.bg-gray-800
+  .mx-auto.max-w-7xl.px-2.sm:px-6.lg:px-8
+    .relative.flex.h-16.items-center.justify-between
+      .absolute.inset-y-0.left-0.flex.items-center.sm:hidden
+        / Mobile menu button
+        %button.relative.inline-flex.items-center.justify-center.rounded-md.p-2.text-gray-400.hover:bg-gray-700.hover:text-white.focus:outline-none.focus:ring-2.focus:ring-inset.focus:ring-white{"aria-controls" => "mobile-menu", "aria-expanded" => "false", type: "button"}
+          %span.absolute{class: "-inset-0.5"}
+          %span.sr-only Open main menu
+          /
+            Icon when menu is closed.
+            
+            Menu open: "hidden", Menu closed: "block"
+          %svg.block.h-6.w-6{"aria-hidden" => "true", fill: "none", stroke: "currentColor", "stroke-width" => "1.5", viewbox: "0 0 24 24"}
+            %path{d: "M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5", "stroke-linecap" => "round", "stroke-linejoin" => "round"}
+          /
+            Icon when menu is open.
+            
+            Menu open: "block", Menu closed: "hidden"
+          %svg.hidden.h-6.w-6{"aria-hidden" => "true", fill: "none", stroke: "currentColor", "stroke-width" => "1.5", viewbox: "0 0 24 24"}
+            %path{d: "M6 18L18 6M6 6l12 12", "stroke-linecap" => "round", "stroke-linejoin" => "round"}
+      .flex.flex-1.items-center.justify-center.sm:items-stretch.sm:justify-start
+        .flex.flex-shrink-0.items-center
+          .text-white.cursor-pointer
+            User Manager
+        .hidden.sm:ml-6.sm:block
+          .flex.space-x-4
+            - if current_user.present?
+              %a.bg-gray-900.text-white.rounded-md.px-3.py-2.text-sm.font-medium{"aria-current" => "page", href: root_path(team_id: current_team&.id)} Dashboard
+              %a.text-gray-300.hover:bg-gray-700.hover:text-white.rounded-md.px-3.py-2.text-sm.font-medium{href: "#{teams_path(team_id: current_team&.id)}"} Teams
+              - if current_team.present?
+                %a.text-gray-300.hover:bg-gray-700.hover:text-white.rounded-md.px-3.py-2.text-sm.font-medium{href: "#{team_roles_path(team_id: current_team&.id)}"} Roles
+                %a.text-gray-300.hover:bg-gray-700.hover:text-white.rounded-md.px-3.py-2.text-sm.font-medium{href: "#{team_users_path(team_id: current_team&.id)}"} Users
+      .absolute.inset-y-0.right-0.flex.items-center.pr-2.sm:static.sm:inset-auto.sm:ml-6.sm:pr-0
+        / Profile dropdown
+        - if current_user.present?
+          .relative.ml-3
+            %div
+              %button#user-menu-button.relative.flex.rounded-full.bg-gray-800.text-sm.focus:outline-none.focus:ring-2.focus:ring-white.focus:ring-offset-2.focus:ring-offset-gray-800{"aria-expanded" => "false", "aria-haspopup" => "true", type: "button"}
+                %span.absolute{class: "-inset-1.5"}
+                %span.sr-only Open user menu
+                .group.relative.cursor-pointer
+                  .flex.items-center.justify-between.space-x-5.text-white.px-4
+                    %a.menu-hover.my-2.py-2.text-base.font-medium{onclick: ""}
+                      - if current_team.present?
+                        = current_team.name
+                      - else
+                        Select Team
+                    %span
+                      %svg.h-6.w-6{fill: "none", stroke: "currentColor", "stroke-width" => "1.5", viewbox: "0 0 24 24", xmlns: "http://www.w3.org/2000/svg"}
+                        %path{d: "M19.5 8.25l-7.5 7.5-7.5-7.5", "stroke-linecap" => "round", "stroke-linejoin" => "round"}
+                  .invisible.absolute.z-50.flex.w-full.flex-col.bg-gray-100.py-1.px-4.text-gray-800.shadow-xl.group-hover:visible{onclick: ""}
+                    - @user_teams&.each do |team|
+                      = link_to team.name, root_path(team_id: team.id), class: 'my-2 block border-b border-gray-100 py-1 font-semibold text-gray-500 hover:text-black md:mx-2'
+        %div.text-white.flex.gap-4
+          - if current_user.present?
+            = link_to "Logout", destroy_user_session_path, data: { turbo_method: :delete }
+          - else
+            = link_to "Login", new_user_session_path
+            = link_to "Sign Up", new_user_registration_path
+        
+  / Mobile menu, show/hide based on menu state.
+  #mobile-menu.sm:hidden
+    .space-y-1.px-2.pb-3.pt-2
+      - if current_user.present?
+        %a.bg-gray-900.text-white.block.rounded-md.px-3.py-2.text-base.font-medium{"aria-current" => "page", href: root_path(team_id: current_team&.id)} Dashboard
+        %a.text-gray-300.hover:bg-gray-700.hover:text-white.block.rounded-md.px-3.py-2.text-base.font-medium{href: "#{teams_path(team_id: current_team&.id)}"} Teams
+        - if current_team.present?
+          %a.text-gray-300.hover:bg-gray-700.hover:text-white.block.rounded-md.px-3.py-2.text-base.font-medium{href: "#{team_roles_path(team_id: current_team&.id)}"} Roles
+          %a.text-gray-300.hover:bg-gray-700.hover:text-white.block.rounded-md.px-3.py-2.text-base.font-medium{href: "#{team_users_path(team_id: current_team&.id)}"} Users
+
+

@@ -1,0 +1,24 @@
+%div{:id => "#{dom_id user}"}
+  %p.my-5
+    %strong.block.font-medium.mb-1 First Name:
+    = user.first_name
+  %p.my-5
+    %strong.block.font-medium.mb-1 Last Name:
+    = user.last_name
+  %p.my-5
+    %strong.block.font-medium.mb-1 Username:
+    = user.username
+  %p.my-5
+    %strong.block.font-medium.mb-1 Email:
+    = user.email
+  %p.my-5
+    %strong.block.font-medium.mb-1 Avatar:
+    - if user.avatar.present?
+      = image_tag user.avatar, width: 100, height: 100
+  %p.my-5
+    %strong.block.font-medium.mb-1 Roles:
+    = user.roles&.pluck(:name)&.join(', ')
+  - if action_name != "show" && (current_team.check_owner(current_user.id) || current_user.id == user.id)
+    = link_to "Show this user", team_user_path(current_team.id, user), class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium"
+    = link_to "Edit this user", edit_team_user_path(user, current_team), class: "rounded-lg py-3 ml-2 px-5 bg-gray-100 inline-block font-medium"
+    %hr.mt-6/

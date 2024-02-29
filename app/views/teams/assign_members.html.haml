@@ -1,0 +1,10 @@
+.mx-auto.w-full{:class => "md:w-2/3"}
+  %h1.font-bold.text-4xl Assign Members
+  = form_with(url: team_save_members_path(current_team), class: "contents") do |form|
+    = form.hidden_field :teams_id, value: params[:teams_id]
+    .my-5
+      = form.label :users
+      = form.select "users_ids[]", options_for_select(@users&.map{|v| [v.username, v.id]}, selected: @assigned_users&.pluck(:id)), multiple: true, required: true
+    .inline
+      = form.submit class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer"
+  = link_to "Back to teams", teams_path(team_id: current_team), class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium"

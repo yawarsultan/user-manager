@@ -1,0 +1,5 @@
+.mx-auto.w-full{:class => "md:w-2/3"}
+  %h1.font-bold.text-4xl Editing role
+  = render "form", role: @role, path: team_role_path(team_id: current_team.id)
+  = link_to "Show this role", team_role_path(@role, team_id: current_team.id), class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium"
+  = link_to "Back to roles", team_roles_path(team_id: current_team.id), class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium"

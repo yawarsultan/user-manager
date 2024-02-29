@@ -1,0 +1,38 @@
+%section.py-1.bg-blueGray-50
+  .w-full.mb-12.xl:mb-0.px-4.mx-auto.mt-24{class: "xl:w-8/12"}
+    .relative.flex.flex-col.min-w-0.break-words.bg-white.w-full.mb-6.shadow-lg.rounded
+      .rounded-t.mb-0.px-4.py-3.border-0
+        .flex.flex-wrap.items-center
+          .relative.w-full.px-4.max-w-full.flex-grow.flex-1
+            %h3.font-semibold.text-base.text-blueGray-700 Teams
+          .relative.w-full.px-4.max-w-full.flex-grow.flex-1.text-right
+            = link_to "Create Team", new_team_path(team_id: current_team&.id), class: "bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+      .block.w-full.overflow-x-auto
+        %table.items-center.bg-transparent.w-full.border-collapse
+          %thead
+            %tr
+              %th.px-6.bg-blueGray-50.text-blueGray-500.align-middle.border.border-solid.border-blueGray-100.py-3.text-xs.uppercase.border-l-0.border-r-0.whitespace-nowrap.font-semibold.text-left
+                Team Name
+              %th.px-6.bg-blueGray-50.text-blueGray-500.align-middle.border.border-solid.border-blueGray-100.py-3.text-xs.uppercase.border-l-0.border-r-0.whitespace-nowrap.font-semibold.text-left
+                Owner
+              %th.px-6.bg-blueGray-50.text-blueGray-500.align-middle.border.border-solid.border-blueGray-100.py-3.text-xs.uppercase.border-l-0.border-r-0.whitespace-nowrap.font-semibold.text-left
+                Assign members
+              %th.px-6.bg-blueGray-50.text-blueGray-500.align-middle.border.border-solid.border-blueGray-100.py-3.text-xs.uppercase.border-l-0.border-r-0.whitespace-nowrap.font-semibold.text-left
+                Edit
+              %th.px-6.bg-blueGray-50.text-blueGray-500.align-middle.border.border-solid.border-blueGray-100.py-3.text-xs.uppercase.border-l-0.border-r-0.whitespace-nowrap.font-semibold.text-left
+                Delete
+          %tbody
+            - @teams&.each do |team|
+              %tr
+                %td.border-t-0.px-6.align-middle.border-l-0.border-r-0.text-xs.whitespace-nowrap.p-4.text-left.text-blueGray-700
+                  = team.name
+                %td.border-t-0.px-6.align-middle.border-l-0.border-r-0.text-xs.whitespace-nowrap.p-4
+                  = team.check_owner(current_user.id)
+                %td.border-t-0.px-6.align-center.border-l-0.border-r-0.text-xs.whitespace-nowrap.p-4
+                  = link_to "Assign Users", team_assign_members_path(team_id: current_team, teams_id: team.id), class: 'bg-yellow-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150'
+                %td.border-t-0.px-6.align-center.border-l-0.border-r-0.text-xs.whitespace-nowrap.p-4
+                  - if current_user.id == team.user_id
+                    = link_to "Edit", edit_team_path(team.id, team_id: current_team&.id), class: 'bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150'
+                %td.border-t-0.px-6.align-middle.border-l-0.border-r-0.text-xs.whitespace-nowrap.p-4
+                  - if current_user.id == team.user_id
+                    = link_to "Delete", team_path(team.id, team_id: current_team&.id), data: { turbo_method: :delete }, class: 'bg-red-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150'
