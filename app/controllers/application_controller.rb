@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_team
-    @current_team || Team.find_by(id: params[:team_id])
+    @current_team || Team.find_by(id: params[:team_id]) || current_user&.teams.first
   end
 
   def fetch_teams
@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
 
   def user_roles
     @user_roles = 
-    if current_user.present?
+    if current_user.present? && current_team.present?
       @user_roles = current_user.roles.where(team_id: current_team.id)&.pluck(:permissions)&.flatten
     end
   end
