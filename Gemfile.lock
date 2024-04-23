@@ -112,6 +112,7 @@ GEM
       ruby2_keywords
     erubi (1.12.0)
     erubis (2.7.0)
+    foreman (0.88.1)
     globalid (1.2.1)
       activesupport (>= 6.1)
     haml (6.3.0)
@@ -334,6 +335,7 @@ DEPENDENCIES
   capybara
   debug
   devise
+  foreman
   haml-rails (~> 2.0)
   html2haml
   importmap-rails
@@ -354,7 +356,7 @@ DEPENDENCIES
   web-console
 
 RUBY VERSION
-   ruby 3.2.2p53
+   ruby 3.2.3p157
 
 BUNDLED WITH
    2.4.10
